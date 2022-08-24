@@ -18,6 +18,7 @@ module.exports = {
   devServer: {
     static: {
       directory: path.join(__dirname, 'public'),
+      /* hot: true, <= código usado na aula, porem quebra meu codigo */
     },
   },
   plugins: [
