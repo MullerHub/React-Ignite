@@ -8,6 +8,29 @@ createServer({
     transactions: Model
   },
 
+  seeds(server) {
+    server.db.loadData({
+      transactions: [
+        {
+          id: 1,
+          title: 'Freelance de website',
+          type: 'deposit',
+          category: 'Desenvolvimento',
+          amount: '6000',
+          createdAt: new Date('2022-10-12 15:00:00')
+        },
+        {
+          id: 2,
+          title: 'DJ',
+          type: 'withdraw',
+          category: 'Entretenimento',
+          amount: '2000',
+          createdAt: new Date('2022-10-12 15:00:00')
+        }
+      ]
+    })
+  },
+
   routes() {
     this.namespace = 'api'
     this.get('/transactions', () => {
@@ -17,7 +40,7 @@ createServer({
     this.post('/transactions', (schema, request) => {
       const data = JSON.parse(request.requestBody)
 
-      return data
+      return schema.create('transactions', data)
     })
   }
 })
