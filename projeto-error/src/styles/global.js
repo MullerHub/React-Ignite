@@ -1,3 +1,6 @@
+import { createGlobalStyle } from 'styled-components'
+export default createGlobalStyle`
+
 * {
   margin: 0;
   padding: 0;
@@ -7,3 +10,4 @@
 .repository-list {
   background-color: red($color: #ff0000);
 }
+`
