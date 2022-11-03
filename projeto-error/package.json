@@ -1,5 +1,5 @@
 {
-  "name": "ReactJS",
+  "name": "reactjs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,7 +14,9 @@
     "babel": "^6.23.0",
     "babel-loader": "^8.2.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.6",
+    "styles-loader": "^4.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
