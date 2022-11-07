@@ -12,9 +12,6 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
-  jwt: {
-    signInKey: process.env.SIGNING_KEY,
-  },
   callbacks: {
     async signIn(user, account, profile) {
       const {email} = user
