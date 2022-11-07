@@ -42,7 +42,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const price = await stripe.prices.retrieve('price_1M0qs3AOshFAsJOxMogVBKNj')
 
   {
-    console.log(process.env.STRIPE_API_KEY)
+    console.log(process.env.GITHUB_ID)
+    console.log('test')
   }
 
   const product = {
