@@ -10,6 +10,7 @@ export default NextAuth({
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET
+      //  scope: 'read:user'
     })
   ],
   callbacks: {
@@ -17,18 +18,21 @@ export default NextAuth({
       const { email } = user
 
       try {
-        return await fauna.query(
+        await fauna.query(
           q.If(
             q.Not(
               q.Exists(
                 q.Match(q.Index('user_by_email'), q.Casefold(user.email))
               )
             ),
-            q.Create(q.Collection('user'), { data: { email } }),
+            q.Create(q.Collection('users'), { data: { email } }),
             q.Get(q.Match(q.Index('user_by_email'), q.Casefold(user.email)))
           )
         )
-      } catch {}
+        return true
+      } catch {
+        return false
+      }
     }
   }
 })
