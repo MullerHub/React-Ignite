@@ -17,12 +17,10 @@ export function SubscribeButton({ priceId }: ISubscribeButtonProps) {
       signIn('github')
       return
     }
+
     try {
-      const response = await api
-        .post('/subscribe')
-        .then(data => data.data)
-        .catch(error => console.log(error))
-      const { sessionId } = response
+      const response = await api.post('/subscribe')
+      const { sessionId } = response.data
       console.log('RESPONSE CHEGANDO:', response)
 
       console.log('SESSION chegando:', sessionId)
