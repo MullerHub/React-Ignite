@@ -5,6 +5,22 @@ import styles from './home.module.scss'
 import { GetStaticProps } from 'next'
 import { stripe } from '../services/stripe'
 
+// Client-side
+// Server-side Rendering (ex: comentários do post)
+// Static Side Generation (ex: post do blog)
+
+// GetServerSideProps: faz a chamada à API via SSR, para que seja visível aos
+// motores de busca. Essa função é executada na camada do Next, e não no browser.
+// export const getServerSideProps: GetServerSideProps = async() => {
+
+// GetStaticProps: faz chamada à API via SSG (Static Side Generation), ou seja,
+// o Next renderiza uma única vez a página e armazena o HTML estático.
+// Da próxima vez que o cliente acessar a página, o Next busca o html armazenado.
+// O único diferencial é a propriedade revalidate: quanto tempo em segundos
+// esta página voltará a ser reconstruída.
+// Só use quando o conteúdo for o mesmo para todos os clientes e não mudar
+// com frequência.
+
 interface IHomeProps {
   product: {
     priceId: string
@@ -39,12 +55,12 @@ export default function Home({ product }: IHomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const price = await stripe.prices.retrieve('price_1M0qs3AOshFAsJOxMogVBKNj')
+  // passar o API ID do preço do produto (ver no site stripe.com)
 
-  {
-    console.log(process.env.GITHUB_ID)
-    console.log('test')
-  }
+  const price = await stripe.prices.retrieve(
+    'price_1M0qs3AOshFAsJOxMogVBKNj'
+    //, {expand: ['product']}   //caso precise obter outros dados do produto
+  )
 
   const product = {
     priceId: price.id,
