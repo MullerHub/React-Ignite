@@ -1,4 +1,5 @@
 import { useSession, signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { api } from '../../services/api'
 import { getStripeJs } from '../../services/stripe-js'
 import styles from './styles.module.scss'
@@ -9,6 +10,7 @@ interface ISubscribeButtonProps {
 
 export function SubscribeButton({ priceId }: ISubscribeButtonProps) {
   const { data: session } = useSession()
+  const router = useRouter()
 
   // session.user
 
@@ -18,9 +20,15 @@ export function SubscribeButton({ priceId }: ISubscribeButtonProps) {
       return
     }
 
+    if (session.activeSubscription) {
+      router.push('/posts')
+      return
+    }
+
     try {
       const response = await api.post('/subscribe')
       const { sessionId } = response.data
+
       console.log('RESPONSE CHEGANDO:', response)
 
       console.log('SESSION chegando:', sessionId)
