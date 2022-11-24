@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { RichText } from 'prismic-dom'
@@ -58,7 +58,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
   )
 }
 
-export const getStaticPath = () => {
+export const getStaticPath: GetStaticPaths = async () => {
   return {
     paths: [],
     fallback: 'blocking'
@@ -71,7 +71,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient()
 
   const response = await prismic.getByUID('publication', String(slug), {})
-
   const post = {
     slug,
     title: RichText.asText(response.data.title),
@@ -89,6 +88,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       post
-    }
+    },
+    redirect: 60 * 30 // 30 minutes
   }
 }
