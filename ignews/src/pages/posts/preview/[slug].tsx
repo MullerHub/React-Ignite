@@ -20,10 +20,13 @@ interface PostPreviewProps {
 
 export default function PostPreview({ post }: PostPreviewProps) {
   const { data: session } = useSession()
+
+  console.log(session)
   const router = useRouter()
 
   useEffect(() => {
     if (session?.activeSubscription) {
+      //parece ser erro de tipagem
       router.push(`/posts/${post.slug}`)
     }
   }, [session])
