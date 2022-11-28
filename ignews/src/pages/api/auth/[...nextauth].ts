@@ -7,40 +7,53 @@ import { query as q } from 'faunadb'
 export default NextAuth({
   providers: [
     GithubProvider({
+      version: 'v3',
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-      scope: 'read:user'
+      authorization: {
+        params: {
+          scope: 'read:user'
+        }
+      }
     })
   ],
+
   callbacks: {
-    async session(session) {
-      const userActiveSubscription = await fauna.query(
-        q.Get(
-          q.Intersection(
-            // necessita do Intersection ser aberto com uma arrary = [conteudo dentro da Intersection]
-            q.Match(
-              q.Index('subscription_by_user_ref'),
-              q.Select(
-                'ref',
-                q.Get(
-                  q.Match(
-                    q.Index('user_by_email'),
-                    q.Casefold(session.user.email)
+    async session({ session }) {
+      try {
+        const userActiveSubscription = await fauna.query(
+          q.Get(
+            q.Intersection([
+              q.Match(
+                q.Index('subscription_by_user_ref'),
+                q.Select(
+                  'ref',
+                  q.Get(
+                    q.Match(
+                      q.Index('user_by_email'),
+                      q.Casefold(session.user.email)
+                    )
                   )
                 )
-              )
-            ),
-            q.Match(q.Index('subscription_by_status'), 'active')
+              ),
+              q.Match(q.Index('subscription_by_status'), 'active')
+            ])
           )
         )
-      )
-      return {
-        ...session,
-        activeSubscription: userActiveSubscription
+        return {
+          ...session,
+          activeSubscription: userActiveSubscription
+        }
+      } catch (e) {
+        console.log(e)
+        return {
+          ...session,
+          activeSubscription: null
+        }
       }
     },
 
-    async signIn({ user, account, profile }) {
+    async signIn({ user }) {
       const { email } = user
 
       try {
