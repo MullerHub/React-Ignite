@@ -1,26 +1,34 @@
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetStaticPaths, GetStaticProps, PreviewData } from 'next'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
-import { RichText } from 'prismic-dom'
 import Link from 'next/link'
-import { getPrismicClient } from '../../../services/prismic'
 
-import styles from '../post.module.css'
+import { RichText } from 'prismic-dom'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { createClient } from '../../../services/prismic'
+import styles from '../post.module.css'
 
-interface PostPreviewProps {
-  post: {
+type IPost = {
+  slug: string
+  title: string
+  content: string
+  updated_at: string
+}
+
+export interface IPostPreviewProps {
+  post: IPost
+}
+
+interface StaticProps extends GetStaticProps {
+  previewData: PreviewData
+  params: {
     slug: string
-    title: string
-    content: string
-    updatedAt: string
   }
 }
 
-export default function PostPreview({ post }: PostPreviewProps) {
+export default function PostPreview({ post }: IPostPreviewProps) {
   const { data: session } = useSession()
-
   console.log(session)
   const router = useRouter()
 
@@ -29,7 +37,7 @@ export default function PostPreview({ post }: PostPreviewProps) {
       //parece ser erro de tipagem
       router.push(`/posts/${post.slug}`)
     }
-  }, [session])
+  }, [post.slug, router, session])
 
   return (
     <>
@@ -40,16 +48,16 @@ export default function PostPreview({ post }: PostPreviewProps) {
       <main className={styles.container}>
         <article className={styles.post}>
           <h1>{post.title}</h1>
-          <time>{post.updatedAt}</time>
+          <time>{post.updated_at}</time>
           <div
             className={`${styles.postContent} ${styles.previewContent}`}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
           <div className={styles.continueReading}>
-            Wanna continue reaging?
+            Wanna continue reading?
             <Link href="/">
-              <a href="">Subscribr now </a>
+              <a href="">Subscribe now 🤗</a>
             </Link>
           </div>
         </article>
@@ -65,15 +73,14 @@ export const getStaticPath: GetStaticPaths = async () => {
   }
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ previwData, params }: StaticProps) => {
   const { slug } = params
+  const client = createClient({ previwData })
 
-  const prismic = getPrismicClient()
-
-  const response = await prismic.getByUID('publication', String(slug), {})
+  const response = await client.getByUID('publication', slug)
   const post = {
-    slug,
-    title: RichText.asText(response.data.title),
+    slug: response.uid,
+    title: response.data.title,
     content: RichText.asHtml(response.data.content.splice(0, 3)),
     updated: new Date(response.last_publication_date).toLocaleDateString(
       'pt-BR',
