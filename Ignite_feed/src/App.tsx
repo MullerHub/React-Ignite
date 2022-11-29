@@ -22,10 +22,10 @@ const posts: Post[] = [
       { type: 'paragraph', content: 'Fala galera 👋' },
       {
         type: 'paragraph',
-        content:
-          'Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀'
+        content: `Alguem me da um help rapidão aquiii,
+        Como eu faço para centralizar uma div???`
       },
-      { type: 'link', content: 'jane.design/doctorcare' }
+      { type: 'link', content: 'github.com/mullerhub' }
     ],
     publishedAt: new Date('2022-05-03 20:00:00')
   },

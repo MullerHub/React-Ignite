@@ -25,7 +25,15 @@ export interface PostProsp {
 }
 
 export function Post({ author, publishedAt, content }: PostProsp) {
-  const [comments, setComments] = useState(['Post bacana, hehehehe'])
+  const [comments, setComments] = useState([
+    `Tenta assim: 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+     `,
+    'Post bacana, hehehehe'
+  ])
 
   const [newCommentText, setNewCommentText] = useState('')
 
