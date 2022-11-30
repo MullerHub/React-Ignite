@@ -17,7 +17,6 @@ export function TransactionsTable() {
 
         <tbody>
           {transactions.map((transaction, index) => {
-            console.log({ transaction, index })
             return (
               <tr key={transaction.id}>
                 <td>{transaction.title}</td>
