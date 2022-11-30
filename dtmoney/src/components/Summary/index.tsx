@@ -2,29 +2,32 @@ import { Container } from './styles'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import { useTransactions } from '../../hooks/useTransactions'
+import { useMemo } from 'react'
 
 export function Summary() {
   const { transactions } = useTransactions()
 
-  const summary = transactions.reduce(
-    (acc, transaction) => {
-      console.log(transaction)
-      if (transaction.type === 'deposit') {
-        acc.deposits += transaction.amount
-        acc.total += transaction.amount
-      } else {
-        acc.withdraws += transaction.amount
-        acc.total -= transaction.amount
-      }
+  const summary = useMemo(() => {
+    return transactions.reduce(
+      (acc, transaction) => {
+        if (transaction.type === 'deposit') {
+          acc.deposits += transaction.amount
+          acc.total += transaction.amount
+        } else {
+          acc.withdraws += transaction.amount
+          acc.total -= transaction.amount
+        }
 
-      return acc
-    },
-    {
-      deposits: 0,
-      withdraws: 0,
-      total: 0
-    }
-  )
+        return acc
+      },
+      {
+        deposits: 0,
+        withdraws: 0,
+        total: 0
+      }
+    )
+  }, [transactions])
+
   console.log(transactions)
   return (
     <Container>
