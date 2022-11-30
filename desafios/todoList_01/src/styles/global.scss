@@ -1,0 +1,39 @@
+:root {
+  --blue: #0D0D0D;
+  --green: #2f31bb;
+  --red: 	#ad273f;
+  --background: #0bf5b700;
+  --shapes: #06041e;
+  --text-title: #4EA8DE;
+  --text: #5E60CE;
+  --text-light: #2f31bb;
+}
+.aaa {
+  background-color: #2f31bb18 !important;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1A1A1A;
+  font: 16px "Poppins", Arial, sans-serif;
+  color: #121214;
+}
+
+input, textarea {
+  font-family: "Poppins";
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+}
+
+button, .checkmark {
+  cursor: pointer;
+}
