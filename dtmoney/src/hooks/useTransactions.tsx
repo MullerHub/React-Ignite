@@ -14,6 +14,9 @@ interface ITransaction {
   type: string
   category: string
   createdAt: string
+  deposits?: any
+  total?: any
+  withdraws?: any
 }
 
 type TransactionInput = Omit<ITransaction, 'id' | 'createdAt'>
