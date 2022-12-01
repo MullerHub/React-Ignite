@@ -16,10 +16,12 @@ export const GlobalStyle = createGlobalStyle`
     background: ${props => props.theme['gray-900']};
 
     // estilização necessita de revisão, sobre a box principal centralizada
-    display: flex;
+   /*  display: flex;
     height: 100vh;
     align-items: center;
     justify-content: center;
+     */
+    
     color: ${props => props.theme['gray-300']};
     -webkit-font-smoothing: antialiased;
   }
