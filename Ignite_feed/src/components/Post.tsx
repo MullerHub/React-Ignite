@@ -32,7 +32,7 @@ export function Post({ author, publishedAt, content }: PostProsp) {
     justify-content: center;
     align-items: center;
      `,
-    'Post bacana, hehehehe'
+    'Um "shuashuashua" qualquer, só para ter conteudo'
   ])
 
   const [newCommentText, setNewCommentText] = useState('')
