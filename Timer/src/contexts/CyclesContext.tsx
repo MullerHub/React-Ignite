@@ -1,17 +1,14 @@
 import { createContext, ReactNode, useReducer, useState } from 'react'
+import {
+  ActionTypes,
+  addNewCycleAction,
+  interruptCurrentCycleAction
+} from '../reducers/cycles/actions'
+import { cyclesReducer, ICycle } from '../reducers/cycles/reducer'
 
 interface ICreateCycleData {
   task: string
   minutesAmount: number
-}
-
-interface ICycle {
-  id: string
-  task: string
-  minutesAmount: number
-  startDate: Date
-  interruptDate?: Date
-  finishedDate?: Date
 }
 
 interface ICyclesContextType {
@@ -31,56 +28,13 @@ interface ICyclesContextProviderProps {
   children: ReactNode
 }
 
-interface ICyclesState {
-  cycles: ICycle[]
-  activeCycleId: string | null
-}
-
 export function CyclesContextProvider({
   children
 }: ICyclesContextProviderProps) {
-  const [cyclesState, dispatch] = useReducer(
-    (state: ICyclesState, action: any) => {
-      switch (action.type) {
-        case 'ADD_NEW_CYCLE':
-          return {
-            ...state,
-            cycles: [...state.cycles, action.payload.newCycle],
-            activeCycleId: action.payload.newCycle.id
-          }
-        case 'INTERRUPT_CURRENT_CYCLE':
-          return {
-            ...state,
-            cycles: state.cycles.map(cycle => {
-              if (cycle.id === state.activeCycleId) {
-                return { ...cycle, interruptDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-            activeCycleId: null
-          }
-        case 'MARK_CURRENT_CYCLE_AS_FINISHED':
-          return {
-            ...state,
-            cycles: state.cycles.map(cycle => {
-              if (cycle.id === state.activeCycleId) {
-                return { ...cycle, finishedDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-            activeCycleId: null
-          }
-        default:
-          return state
-      }
-    },
-    {
-      cycles: [],
-      activeCycleId: null
-    }
-  )
+  const [cyclesState, dispatch] = useReducer(cyclesReducer, {
+    cycles: [],
+    activeCycleId: null
+  })
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
@@ -93,12 +47,7 @@ export function CyclesContextProvider({
   }
 
   function markCurrentCycleAsFinished() {
-    dispatch({
-      type: 'MARK_CURRENT_CYCLE_AS_FINISHED',
-      payload: {
-        activeCycleId
-      }
-    })
+    dispatch(markCurrentCycleAsFinished())
   }
 
   function createNewCycle(data: ICreateCycleData) {
@@ -110,12 +59,7 @@ export function CyclesContextProvider({
       startDate: new Date()
     }
 
-    dispatch({
-      type: 'ADD_NEW_CYCLE',
-      payload: {
-        newCycle
-      }
-    })
+    dispatch(addNewCycleAction(newCycle))
     // setCycles(state => [...state, newCycle])
     setAmountSecondsPassed(0)
 
@@ -123,12 +67,7 @@ export function CyclesContextProvider({
   }
 
   function interruptCurrentCycle() {
-    dispatch({
-      type: 'INTERRUPT_CURRENT_CYCLE',
-      payload: {
-        activeCycleId
-      }
-    })
+    dispatch(interruptCurrentCycleAction())
   }
 
   return (
