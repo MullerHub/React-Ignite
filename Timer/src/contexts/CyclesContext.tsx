@@ -4,12 +4,12 @@ import {
   ReactNode,
   useEffect,
   useReducer,
-  useState
+  useState,
 } from 'react'
 import {
   addNewCycleAction,
   interruptCurrentCycleAction,
-  markCurrentCycleAsFinishedAction
+  markCurrentCycleAsFinishedAction,
 } from '../reducers/cycles/actions'
 import { cyclesReducer, ICycle } from '../reducers/cycles/reducer'
 
@@ -36,25 +36,29 @@ interface ICyclesContextProviderProps {
 }
 
 export function CyclesContextProvider({
-  children
+  children,
 }: ICyclesContextProviderProps) {
   const [cyclesState, dispatch] = useReducer(
     cyclesReducer,
     {
       cycles: [],
-      activeCycleId: null
+      activeCycleId: null,
     },
     () => {
       const storedStateAsJSON = localStorage.getItem(
-        '@ignite-timer:cycles-state'
+        '@ignite-timer:cycles-state',
       )
       if (storedStateAsJSON) {
         return JSON.parse(storedStateAsJSON)
       }
-    }
+      return {
+        cycles: [],
+        activeCycleId: null,
+      }
+    },
   )
   const { cycles, activeCycleId } = cyclesState
-  const activeCycle = cycles.find(cycle => cycle.id === activeCycleId)
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
     if (activeCycle) {
@@ -83,7 +87,7 @@ export function CyclesContextProvider({
       id,
       task: data.task,
       minutesAmount: data.minutesAmount,
-      startDate: new Date()
+      startDate: new Date(),
     }
 
     dispatch(addNewCycleAction(newCycle))
@@ -107,7 +111,7 @@ export function CyclesContextProvider({
         amountSecondsPassed,
         setSecondsPasses,
         createNewCycle,
-        interruptCurrentCycle
+        interruptCurrentCycle,
       }}
     >
       {children}
