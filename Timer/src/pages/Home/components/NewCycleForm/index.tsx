@@ -20,10 +20,10 @@ export function NewCycleForm() {
         {...register('task')}
       />
       <datalist id="task-suggestions">
-        <option value="Banana-caramelizada" />
-        <option value="Pão com mortandela" />
-        <option value="ak-47" />
-        <option value="gergelim de novo" />
+        <option value="Tempo pro cafézinho" />
+        <option value="Tempinho de lazer" />
+        <option value="Começo de um projeto novo" />
+        <option value="Continuar a aplicação" />
       </datalist>
 
       <label htmlFor="minutesAmount">durante</label>

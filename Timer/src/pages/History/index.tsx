@@ -10,7 +10,10 @@ export function History() {
     <HistoryContainer>
       <h1>Meu historico</h1>
 
-      <pre>{JSON.stringify(cycles, null, 2)}</pre>
+      {/*
+          <pre>{JSON.stringify(cycles, null, 2)}</pre>
+       Mostrar os dados recebidos no historico
+       */}
 
       <HistoryList>
         <table>
